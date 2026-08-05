@@ -1,7 +1,6 @@
-const CACHE_NAME = "daily-tracker-v1";
+const CACHE_NAME = "daily-tracker-v2";
 const APP_SHELL = [
   "./",
-  "./index.html",
   "./style.css",
   "./app.js",
   "./manifest.webmanifest",
@@ -43,7 +42,7 @@ self.addEventListener("fetch", function (event) {
         return response;
       });
     }).catch(function () {
-      return caches.match("./index.html");
+      return caches.match("./");
     })
   );
 });

@@ -2,7 +2,7 @@
   "name": "Daily Tracker",
   "short_name": "Daily Tracker",
   "description": "Track daily activities on a calendar and check them off.",
-  "start_url": "./index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
