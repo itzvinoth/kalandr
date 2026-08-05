@@ -115,6 +115,7 @@ body {
 .view-tabs {
   display: flex;
   flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 12px;
 }
 

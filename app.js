@@ -380,7 +380,9 @@
       tab.addEventListener("click", function () {
         state.viewMode = tab.dataset.view;
         document.querySelectorAll(".view-tab").forEach(function (t) {
-          t.setAttribute("aria-selected", String(t === tab));
+          var active = t === tab;
+          t.setAttribute("aria-pressed", String(active));
+          t.classList.toggle("outline", !active);
         });
         renderCalendar();
       });
