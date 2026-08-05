@@ -1,9 +1,9 @@
 # Daily Tracker
 
-A small, dependency-free habit tracker. Define the activities you want to do
-every day, then check them off on a calendar. All data stays in your
-browser's `localStorage` — nothing is sent anywhere — and you can export or
-import your history as a JSON file whenever you like.
+A small habit tracker. Define the activities you want to do every day, then
+check them off on a calendar. All data stays in your browser's
+`localStorage` — nothing is sent anywhere — and you can export or import
+your history as a JSON file whenever you like.
 
 ## Features
 
@@ -22,9 +22,20 @@ import your history as a JSON file whenever you like.
 - **Installable PWA** — has a web app manifest and service worker, so it
   can be added to a phone's home screen and works offline like a native app.
 
+## Built with
+
+UI components (buttons, forms, the day dialog, tabs, badges, toasts) come
+from [Oat](https://oat.ink) ([knadh/oat](https://github.com/knadh/oat)), an
+~40KB, dependency-free, semantic HTML/CSS/JS component library — vendored
+directly in this repo as `oat.min.css` / `oat.min.js` (pinned to `v0.7.1`,
+MIT licensed) rather than loaded from a CDN, so the app keeps working
+offline as a PWA. The calendar grid itself is custom, since Oat doesn't
+have a calendar component. Oat is still pre-1.0 and may have breaking
+changes on upgrade — check its changelog before bumping the vendored files.
+
 ## Running it
 
-No build step, no dependencies. Just serve the folder and open it:
+No build step. Just serve the folder and open it:
 
 ```bash
 python3 -m http.server 8000

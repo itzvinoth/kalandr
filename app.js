@@ -46,16 +46,6 @@
     );
   }
 
-  function showToast(message) {
-    var toast = document.getElementById("toast");
-    toast.textContent = message;
-    toast.hidden = false;
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(function () {
-      toast.hidden = true;
-    }, 2200);
-  }
-
   function nextColor() {
     return PALETTE[state.activities.length % PALETTE.length];
   }
@@ -106,7 +96,7 @@
     }
     state.activities.forEach(function (activity) {
       var li = document.createElement("li");
-      li.className = "activity-chip";
+      li.className = "badge outline";
 
       var dot = document.createElement("span");
       dot.className = "activity-dot";
@@ -135,14 +125,17 @@
   function renderCalendar() {
     var calendarNav = document.getElementById("calendarNav");
     var weekdayRow = document.getElementById("weekdayRow");
+    var grid = document.getElementById("calendarGrid");
 
     if (state.viewMode === "month") {
       calendarNav.hidden = false;
       weekdayRow.hidden = false;
+      grid.classList.remove("rolling-grid");
       renderMonthView();
     } else {
       calendarNav.hidden = true;
       weekdayRow.hidden = true;
+      grid.classList.add("rolling-grid");
       renderRollingView(state.viewMode === "last7" ? 7 : 30);
     }
   }
@@ -306,11 +299,11 @@
       });
     }
 
-    modal.hidden = false;
+    modal.showModal();
   }
 
   function closeModal() {
-    document.getElementById("dayModal").hidden = true;
+    document.getElementById("dayModal").close();
     state.selectedDateKey = null;
   }
 
@@ -330,7 +323,7 @@
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast("Exported JSON file");
+    ot.toast("Exported JSON file");
   }
 
   function importJSON(file) {
@@ -347,9 +340,9 @@
         saveData();
         renderActivities();
         renderCalendar();
-        showToast("Import successful");
+        ot.toast("Import successful");
       } catch (e) {
-        showToast("Import failed: invalid JSON file");
+        ot.toast("Import failed: invalid JSON file", "Error", { variant: "danger" });
       }
     };
     reader.readAsText(file);
@@ -387,7 +380,7 @@
       tab.addEventListener("click", function () {
         state.viewMode = tab.dataset.view;
         document.querySelectorAll(".view-tab").forEach(function (t) {
-          t.classList.toggle("active", t === tab);
+          t.setAttribute("aria-selected", String(t === tab));
         });
         renderCalendar();
       });
@@ -402,9 +395,6 @@
     document.getElementById("closeModal").addEventListener("click", closeModal);
     document.getElementById("dayModal").addEventListener("click", function (e) {
       if (e.target.id === "dayModal") closeModal();
-    });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") closeModal();
     });
 
     document.getElementById("exportBtn").addEventListener("click", exportJSON);

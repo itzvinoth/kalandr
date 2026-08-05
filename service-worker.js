@@ -1,8 +1,10 @@
-const CACHE_NAME = "daily-tracker-v2";
+const CACHE_NAME = "daily-tracker-v3";
 const APP_SHELL = [
   "./",
   "./style.css",
   "./app.js",
+  "./oat.min.css",
+  "./oat.min.js",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png"

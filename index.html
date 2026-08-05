@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Daily Tracker</title>
+  <link rel="stylesheet" href="oat.min.css" />
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.webmanifest" />
   <meta name="theme-color" content="#4f46e5" />
@@ -19,37 +20,39 @@
     <header class="topbar">
       <div class="brand">
         <h1>Daily Tracker</h1>
-        <p class="subtitle">Check off your daily activities</p>
+        <p class="subtitle text-light">Check off your daily activities</p>
       </div>
       <div class="topbar-actions">
-        <button id="importBtn" class="btn btn-ghost" type="button">Import JSON</button>
+        <button id="importBtn" class="outline" type="button">Import JSON</button>
         <input id="importInput" type="file" accept="application/json" hidden />
-        <button id="exportBtn" class="btn btn-ghost" type="button">Export JSON</button>
+        <button id="exportBtn" class="outline" type="button">Export JSON</button>
       </div>
     </header>
 
-    <section class="activities-panel">
+    <section class="activities-panel card">
       <form id="activityForm" class="activity-form">
-        <input id="activityInput" type="text" placeholder="Add a new activity, e.g. Exercise" maxlength="40" autocomplete="off" />
-        <button type="submit" class="btn btn-primary">Add</button>
+        <fieldset class="group">
+          <input id="activityInput" type="text" placeholder="Add a new activity, e.g. Exercise" maxlength="40" autocomplete="off" />
+          <button type="submit">Add</button>
+        </fieldset>
       </form>
-      <ul id="activityList" class="activity-list"></ul>
+      <ul id="activityList" class="activity-list unstyled"></ul>
     </section>
 
-    <section class="calendar-panel">
-      <div class="view-tabs" id="viewTabs">
-        <button class="view-tab active" type="button" data-view="month">Month</button>
-        <button class="view-tab" type="button" data-view="last7">Last 7 Days</button>
-        <button class="view-tab" type="button" data-view="last30">Last 30 Days</button>
+    <section class="calendar-panel card">
+      <div class="view-tabs" role="tablist" id="viewTabs">
+        <button class="view-tab" role="tab" type="button" aria-selected="true" data-view="month">Month</button>
+        <button class="view-tab" role="tab" type="button" aria-selected="false" data-view="last7">Last 7 Days</button>
+        <button class="view-tab" role="tab" type="button" aria-selected="false" data-view="last30">Last 30 Days</button>
       </div>
 
       <div class="calendar-nav" id="calendarNav">
-        <button id="prevMonth" class="btn btn-icon" type="button" aria-label="Previous month">&#8249;</button>
+        <button id="prevMonth" class="ghost icon" type="button" aria-label="Previous month">&#8249;</button>
         <div class="calendar-title">
           <span id="monthLabel"></span>
         </div>
-        <button id="nextMonth" class="btn btn-icon" type="button" aria-label="Next month">&#8250;</button>
-        <button id="todayBtn" class="btn btn-ghost today-btn" type="button">Today</button>
+        <button id="nextMonth" class="ghost icon" type="button" aria-label="Next month">&#8250;</button>
+        <button id="todayBtn" class="outline today-btn" type="button">Today</button>
       </div>
 
       <div class="weekday-row" id="weekdayRow">
@@ -60,19 +63,18 @@
     </section>
   </div>
 
-  <div id="dayModal" class="modal-overlay" hidden>
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalDate">
-      <div class="modal-header">
-        <h2 id="modalDate"></h2>
-        <button id="closeModal" class="btn btn-icon" type="button" aria-label="Close">&times;</button>
-      </div>
-      <ul id="modalChecklist" class="modal-checklist"></ul>
-      <p id="modalEmpty" class="modal-empty" hidden>No activities yet. Add one above to start tracking.</p>
+  <dialog id="dayModal">
+    <header>
+      <h2 id="modalDate"></h2>
+      <button id="closeModal" class="ghost icon small" type="button" aria-label="Close">&times;</button>
+    </header>
+    <div>
+      <ul id="modalChecklist" class="modal-checklist unstyled"></ul>
+      <p id="modalEmpty" class="modal-empty text-light" hidden>No activities yet. Add one above to start tracking.</p>
     </div>
-  </div>
+  </dialog>
 
-  <div id="toast" class="toast" hidden></div>
-
+  <script src="oat.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
