@@ -19,6 +19,8 @@ import your history as a JSON file whenever you like.
 - **Export / Import JSON** — download your full activity list and history
   as a `.json` file (for backup or moving to another browser), and load it
   back in later.
+- **Installable PWA** — has a web app manifest and service worker, so it
+  can be added to a phone's home screen and works offline like a native app.
 
 ## Running it
 
@@ -40,6 +42,25 @@ directly (`file://`) also works in most browsers.
    review recent progress.
 4. Use **Export JSON** to save a backup file, and **Import JSON** to
    restore it (this replaces your current activities and history).
+
+## Installing on mobile (PWA)
+
+The app has a manifest and service worker, so a browser will offer to
+install it as an app. This requires the site to be served over **HTTPS**
+(plain `http://localhost` works too, but a phone can't reach your laptop's
+`localhost`) — so host the folder somewhere reachable over HTTPS (GitHub
+Pages, Netlify, Vercel, Cloudflare Pages, or any static host with TLS), then
+open that URL on your phone:
+
+- **Android (Chrome)** — open the site, tap the **⋮** menu, then **"Add to
+  Home screen" / "Install app"**.
+- **iOS (Safari)** — open the site, tap the **Share** icon, then **"Add to
+  Home Screen"**.
+
+Once installed, the app opens full-screen without browser chrome and keeps
+working offline (the service worker caches the app shell on first load).
+Since all data lives in that browser's `localStorage`, the installed app and
+the regular browser tab share the same data only if they're the same origin.
 
 ## Screenshots
 
