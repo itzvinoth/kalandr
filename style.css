@@ -69,7 +69,6 @@ body {
 
 .activities-panel {
   margin-bottom: 20px;
-  padding: 16px;
 }
 
 .activity-form {
@@ -106,10 +105,6 @@ body {
 .activity-empty {
   color: var(--text-muted);
   font-size: 13px;
-}
-
-.calendar-panel {
-  padding: 16px;
 }
 
 .view-tabs {
@@ -189,8 +184,6 @@ body {
   background: var(--bg);
   padding: 6px;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
   gap: 4px;
   transition: border-color 0.15s ease, transform 0.05s ease;
 }
@@ -274,8 +267,6 @@ body {
 }
 
 .modal-checklist {
-  display: flex;
-  flex-direction: column;
   gap: 6px;
 }
 

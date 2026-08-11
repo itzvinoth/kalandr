@@ -143,7 +143,7 @@
   function makeDayCell(cellYear, cellMonth, dayNum, options) {
     var key = dateKey(cellYear, cellMonth, dayNum);
     var cell = document.createElement("div");
-    cell.className = "day-cell" + (options.outside ? " outside" : "") + (options.rolling ? " rolling" : "");
+    cell.className = "day-cell flex flex-col" + (options.outside ? " outside" : "") + (options.rolling ? " rolling" : "");
 
     var isToday = cellYear === today.getFullYear() && cellMonth === today.getMonth() && dayNum === today.getDate();
     if (isToday) cell.classList.add("today");
