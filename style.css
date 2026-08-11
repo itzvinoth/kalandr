@@ -181,7 +181,6 @@ body {
   min-height: 64px;
   border-radius: 8px;
   border: 1px solid var(--border);
-  background: var(--bg);
   padding: 6px;
   cursor: pointer;
   gap: 4px;
