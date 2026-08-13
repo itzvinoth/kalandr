@@ -44,6 +44,20 @@ python3 -m http.server 8000
 Then visit `http://localhost:8000` in your browser. Opening `index.html`
 directly (`file://`) also works in most browsers.
 
+## Deployment
+
+This is a static site (no build step) hosted on **Cloudflare Pages**
+(project name `kalandr`). There's no CI pipeline — pushing to `main` does
+**not** auto-deploy. To publish the current working tree:
+
+```bash
+npx wrangler login          # one-time, opens a browser to authenticate
+npx wrangler pages deploy . --project-name=kalandr
+```
+
+Run the deploy command from the repo root after committing/testing your
+changes locally.
+
 ## Usage
 
 1. Add your activities in the box at the top (e.g. "Exercise", "Meditate").
