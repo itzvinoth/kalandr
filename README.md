@@ -35,24 +35,26 @@ changes on upgrade — check its changelog before bumping the vendored files.
 
 ## Running it
 
-No build step. Just serve the folder and open it:
+No build step. The web app lives in `public/` — just serve that folder and
+open it:
 
 ```bash
-python3 -m http.server 8000
+python3 -m http.server 8000 --directory public
 ```
 
-Then visit `http://localhost:8000` in your browser. Opening `index.html`
-directly (`file://`) also works in most browsers.
+Then visit `http://localhost:8000` in your browser. Opening
+`public/index.html` directly (`file://`) also works in most browsers.
 
 ## Deployment
 
 This is a static site (no build step) hosted on **Cloudflare Pages**
-(project name `kalandr`). There's no CI pipeline — pushing to `main` does
-**not** auto-deploy. To publish the current working tree:
+(project name `kalandr`), deployed from the `public/` folder. There's no CI
+pipeline — pushing to `main` does **not** auto-deploy. To publish the
+current working tree:
 
 ```bash
 npx wrangler login          # one-time, opens a browser to authenticate
-npx wrangler pages deploy . --project-name=kalandr
+npx wrangler pages deploy public --project-name=kalandr
 ```
 
 Run the deploy command from the repo root after committing/testing your
@@ -60,13 +62,49 @@ changes locally.
 
 ## Desktop app (Tauri)
 
-`src-tauri/` wraps the same static files (`index.html`, `app.js`,
-`style.css`, `oat.min.*`) in a native desktop shell using
+`src-tauri/` wraps the web app in `public/` in a native desktop shell using
 [Tauri](https://tauri.app) — no separate frontend build, `frontendDist` in
-`src-tauri/tauri.conf.json` points straight at the repo root. It's
-Cargo-only (no `package.json`/npm dependency).
+`src-tauri/tauri.conf.json` points straight at `public/`. It's Cargo-only
+(no `package.json`/npm dependency).
 
-**Prerequisites** (one-time):
+### Building via Docker (recommended)
+
+The Rust toolchain and WebKitGTK/GTK system libraries only live inside a
+container, so they can't conflict with anything else on your machine. The
+`Dockerfile` at the repo root bakes in Rust + those system libs +
+`tauri-cli`.
+
+```bash
+# One-time: build the builder image
+docker build -t kalandr-tauri-builder .
+
+# Compile + bundle a .deb, writing into src-tauri/target/ on the host
+docker run --rm \
+  -v "$(pwd)":/app \
+  -w /app/src-tauri \
+  -u "$(id -u):$(id -g)" \
+  -e HOME=/tmp \
+  -e CARGO_HOME=/tmp/.cargo \
+  kalandr-tauri-builder \
+  cargo tauri build
+```
+
+The `.deb` lands in `src-tauri/target/release/bundle/deb/`. The `-u`/`HOME`
+flags keep output files owned by you instead of root; `CARGO_HOME=/tmp/.cargo`
+is ephemeral (each container run re-fetches crates — not cached between
+runs, but `src-tauri/target/` is bind-mounted so compiled objects persist).
+
+This only builds the **Linux** bundle (`.deb`) — Windows/macOS installers
+still require building on those OSes (Tauri doesn't cross-compile GUI
+targets). `cargo tauri dev` (the live-reload dev window) also isn't
+practical this way since it needs a display; iterate on the UI directly in
+a browser against `public/` and only reach for Docker to produce the final
+bundle.
+
+### Building natively (alternative)
+
+If you'd rather install the toolchain directly on your machine instead of
+using Docker:
 
 ```bash
 # Rust toolchain
@@ -78,25 +116,20 @@ sudo apt install build-essential libwebkit2gtk-4.1-dev libgtk-3-dev \
 
 # Tauri CLI
 cargo install tauri-cli --version "^2" --locked
-```
 
-**Generate proper app icons** (the committed `src-tauri/icons/icon.png` is
-just the existing 512px PWA icon as a placeholder):
-
-```bash
-cargo tauri icon icons/icon-512.png
-```
-
-**Run / build:**
-
-```bash
 cargo tauri dev      # launch in a dev window
 cargo tauri build    # produce a native installer/binary for this OS
 ```
 
-> Note: this scaffold hasn't been built/run yet in this environment (no
-> Rust toolchain was installed here) — verify `cargo tauri dev` launches
-> cleanly before relying on it.
+### App icons
+
+The committed `src-tauri/icons/icon.png` is just the existing 512px PWA
+icon as a placeholder. Regenerate the full platform icon set from it (or a
+higher-res source) with:
+
+```bash
+cargo tauri icon public/icons/icon-512.png
+```
 
 ## Usage
 

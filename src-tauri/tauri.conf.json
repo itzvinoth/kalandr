@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "identifier": "com.kalandr.dailytracker",
   "build": {
-    "frontendDist": "../"
+    "frontendDist": "../public"
   },
   "app": {
     "windows": [
@@ -23,7 +23,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": ["deb"],
     "icon": [
       "icons/icon.png"
     ]
