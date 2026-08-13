@@ -142,8 +142,11 @@
 
   function makeDayCell(cellYear, cellMonth, dayNum, options) {
     var key = dateKey(cellYear, cellMonth, dayNum);
-    var cell = document.createElement("div");
-    cell.className = "day-cell flex flex-col" + (options.outside ? " outside" : "") + (options.rolling ? " rolling" : "");
+    var cell = document.createElement("button");
+    cell.type = "button";
+    cell.className = "day-cell flex flex-col ghost" + (options.outside ? " outside" : "") + (options.rolling ? " rolling" : "");
+    cell.disabled = options.outside;
+    cell.setAttribute("aria-label", new Date(cellYear, cellMonth, dayNum).toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" }));
 
     var isToday = cellYear === today.getFullYear() && cellMonth === today.getMonth() && dayNum === today.getDate();
     if (isToday) cell.classList.add("today");
@@ -185,9 +188,7 @@
       cell.appendChild(progress);
     }
 
-    if (!options.outside) {
-      cell.addEventListener("click", function () { openDayModal(key); });
-    }
+    cell.addEventListener("click", function () { openDayModal(key); });
 
     return cell;
   }
