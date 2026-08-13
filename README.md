@@ -58,6 +58,46 @@ npx wrangler pages deploy . --project-name=kalandr
 Run the deploy command from the repo root after committing/testing your
 changes locally.
 
+## Desktop app (Tauri)
+
+`src-tauri/` wraps the same static files (`index.html`, `app.js`,
+`style.css`, `oat.min.*`) in a native desktop shell using
+[Tauri](https://tauri.app) — no separate frontend build, `frontendDist` in
+`src-tauri/tauri.conf.json` points straight at the repo root. It's
+Cargo-only (no `package.json`/npm dependency).
+
+**Prerequisites** (one-time):
+
+```bash
+# Rust toolchain
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Linux system libraries (Debian/Ubuntu)
+sudo apt install build-essential libwebkit2gtk-4.1-dev libgtk-3-dev \
+  libayatana-appindicator3-dev librsvg2-dev
+
+# Tauri CLI
+cargo install tauri-cli --version "^2" --locked
+```
+
+**Generate proper app icons** (the committed `src-tauri/icons/icon.png` is
+just the existing 512px PWA icon as a placeholder):
+
+```bash
+cargo tauri icon icons/icon-512.png
+```
+
+**Run / build:**
+
+```bash
+cargo tauri dev      # launch in a dev window
+cargo tauri build    # produce a native installer/binary for this OS
+```
+
+> Note: this scaffold hasn't been built/run yet in this environment (no
+> Rust toolchain was installed here) — verify `cargo tauri dev` launches
+> cleanly before relying on it.
+
 ## Usage
 
 1. Add your activities in the box at the top (e.g. "Exercise", "Meditate").
